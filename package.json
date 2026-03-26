@@ -1,0 +1,19 @@
+{
+  "name": "swasthya-care-workspace",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -n server,client \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:client": "npm run dev --workspace client",
+    "dev:server": "npm run dev --workspace server",
+    "build": "npm run build --workspace client",
+    "preview": "npm run preview --workspace client"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

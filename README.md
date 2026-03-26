@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Swasthya Care - Full MERN Hospital Management System
 
 A role-based hospital platform with:
@@ -83,3 +84,7 @@ VITE_API_BASE_URL=http://localhost:5001/api
 - Fallback doctor data is shown on frontend if API is unavailable.
 - Booking, appointments, provider schedule, and admin analytics are wired to backend endpoints.
 - Email/SMS notifications are scaffolded through service placeholders and logging.
+=======
+# SwasthyaCare
+Swasthya Care is a sleek, fully responsive hospital website designed to make healthcare access effortless. Patients can easily book appointments by choosing their preferred date and time slots with just a few clicks. The platform features well-organized sections for medical services, doctor profiles, and an intuitive appointment form.
+>>>>>>> cce5946e460683a1226f45131ea34844c2e58044

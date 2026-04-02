@@ -35,6 +35,12 @@ const faqData = {
   ]
 };
 
+const tutorials = [
+  { title: 'Getting started as a patient', duration: '4:18', icon: '▶' },
+  { title: 'Running your first tele-consult', duration: '5:06', icon: '▶' },
+  { title: 'Admin reporting walkthrough', duration: '6:42', icon: '▶' }
+];
+
 function HelpPage() {
   const [role, setRole] = useState('Patient');
   const [query, setQuery] = useState('');
@@ -50,8 +56,8 @@ function HelpPage() {
     [role, query]
   );
 
-  const submitFeatureRequest = (event) => {
-    event.preventDefault();
+  const submitFeatureRequest = (e) => {
+    e.preventDefault();
     if (!featureRequest.trim()) return;
     setSubmitted(true);
     setFeatureRequest('');
@@ -67,80 +73,141 @@ function HelpPage() {
       />
 
       <section className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
+        {/* FAQ */}
         <div className="card p-5">
-          <div className="flex flex-wrap items-center gap-2">
-            {['Patient', 'Doctor', 'Admin'].map((item) => (
+          {/* Role tabs */}
+          <div className="flex flex-wrap gap-2">
+            {['Patient', 'Doctor', 'Admin'].map((r) => (
               <button
-                key={item}
+                key={r}
                 type="button"
-                onClick={() => setRole(item)}
-                className={`rounded-full px-4 py-2 text-sm font-semibold ${
-                  role === item ? 'bg-primary-600 text-white' : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-200'
+                onClick={() => setRole(r)}
+                className={`rounded-full px-4 py-2 text-sm font-semibold transition-all duration-200 ${
+                  role === r
+                    ? 'bg-gradient-to-r from-primary-600 to-primary-500 text-white shadow-soft'
+                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
                 }`}
               >
-                {item}
+                {r}
               </button>
             ))}
           </div>
 
-          <input
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search FAQ"
-            className="mt-3 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
-          />
+          {/* Search */}
+          <div className="relative mt-4">
+            <svg
+              className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
+              width="15" height="15" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" strokeWidth="2" strokeLinecap="round"
+            >
+              <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search FAQ…"
+              className="input pl-10"
+            />
+          </div>
 
-          <div className="mt-4 space-y-3">
+          {/* FAQ items */}
+          <div className="mt-4 space-y-2.5">
             {filteredFaq.map((faq) => (
-              <div key={faq.q} className="rounded-xl border border-slate-100 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800/50">
-                <p className="font-semibold text-primary-900 dark:text-primary-100">{faq.q}</p>
-                <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{faq.a}</p>
+              <div
+                key={faq.q}
+                className="rounded-xl border border-slate-100 bg-gradient-to-br from-slate-50 to-white p-4 dark:border-slate-700 dark:from-slate-800/60 dark:to-slate-800/30"
+              >
+                <p className="text-sm font-bold text-slate-900 dark:text-white">{faq.q}</p>
+                <p className="mt-1.5 text-sm leading-relaxed text-slate-600 dark:text-slate-400">{faq.a}</p>
               </div>
             ))}
-            {filteredFaq.length === 0 ? <p className="text-sm text-slate-600 dark:text-slate-300">No FAQ entries match your search.</p> : null}
+            {filteredFaq.length === 0 && (
+              <p className="py-4 text-center text-sm text-slate-500 dark:text-slate-400">
+                No FAQ entries match your search.
+              </p>
+            )}
           </div>
         </div>
 
         <div className="space-y-4">
+          {/* Video tutorials */}
           <div className="card p-5">
             <p className="section-title">Video Tutorials</p>
-            <ul className="mt-3 space-y-2 text-sm text-slate-700 dark:text-slate-200">
-              <li className="rounded-xl border border-slate-100 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-800/50">Getting started as a patient (4:18)</li>
-              <li className="rounded-xl border border-slate-100 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-800/50">Running your first tele-consult (5:06)</li>
-              <li className="rounded-xl border border-slate-100 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-800/50">Admin reporting walkthrough (6:42)</li>
+            <ul className="mt-4 space-y-2.5">
+              {tutorials.map((t) => (
+                <li key={t.title}>
+                  <button
+                    type="button"
+                    className="flex w-full items-center gap-3 rounded-xl border border-slate-100 bg-slate-50/80 p-3.5 transition hover:border-primary-200 hover:bg-primary-50/40 dark:border-slate-700 dark:bg-slate-800/50 dark:hover:border-primary-700/50 dark:hover:bg-primary-900/15"
+                  >
+                    <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-gradient-to-br from-primary-600 to-primary-500 text-xs font-bold text-white shadow-soft">
+                      {t.icon}
+                    </div>
+                    <div className="min-w-0 flex-1 text-left">
+                      <p className="truncate text-sm font-semibold text-slate-800 dark:text-slate-200">{t.title}</p>
+                      <p className="text-xs text-slate-400 dark:text-slate-500">{t.duration}</p>
+                    </div>
+                    <svg className="shrink-0 text-slate-400" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                      <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                </li>
+              ))}
             </ul>
           </div>
 
+          {/* Live support */}
           <div className="card p-5">
             <p className="section-title">Live Support</p>
-            <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">Intercom/chatbot widget placeholder for instant support with human escalation.</p>
-            <button type="button" className="mt-3 w-full rounded-full bg-primary-600 px-4 py-2 text-sm font-semibold text-white">
+            <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+              Instant support with human escalation available 24/7 for clinical and billing queries.
+            </p>
+            <button type="button" className="btn-primary mt-4 w-full">
               Start Live Chat
             </button>
           </div>
 
+          {/* Feature request */}
           <form onSubmit={submitFeatureRequest} className="card p-5">
             <p className="section-title">Feature Request</p>
             <textarea
               value={featureRequest}
-              onChange={(event) => setFeatureRequest(event.target.value)}
-              className="mt-3 min-h-20 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
-              placeholder="Tell us what would make MediConnect better for you"
+              onChange={(e) => setFeatureRequest(e.target.value)}
+              className="input mt-3 min-h-[88px] resize-none"
+              placeholder="Tell us what would make Swasthya Care better for you…"
             />
-            <button type="submit" className="mt-3 rounded-full bg-primary-600 px-4 py-2 text-xs font-semibold text-white">
+            <button type="submit" className="btn-primary mt-3">
               Submit Request
             </button>
-            {submitted ? <p className="mt-2 text-xs text-emerald-700 dark:text-emerald-300">Thanks, your feature request was submitted.</p> : null}
+            {submitted ? (
+              <div className="mt-3 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-medium text-emerald-700 dark:border-emerald-800/50 dark:bg-emerald-900/20 dark:text-emerald-400">
+                Thanks — your feature request was submitted.
+              </div>
+            ) : null}
           </form>
 
-          <div className="card border-amber-200 bg-amber-50 p-5 dark:border-amber-700 dark:bg-amber-900/30">
-            <p className="section-title">Escalation Path</p>
-            <p className="mt-2 text-sm text-amber-800 dark:text-amber-200">
-              For medical emergencies call 911 immediately. For urgent billing or clinical concerns, escalate to human support via
-              hotline: +1 (800) 555-1234.
+          {/* Escalation */}
+          <div className="card overflow-hidden border-amber-200/80 bg-gradient-to-br from-amber-50 to-amber-50/30 p-5 dark:border-amber-700/40 dark:from-amber-900/15 dark:to-transparent">
+            <div className="mb-3 flex items-center gap-2">
+              <div className="grid h-8 w-8 place-items-center rounded-full bg-amber-100 dark:bg-amber-900/40">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-amber-600 dark:text-amber-400">
+                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" strokeLinecap="round" /><line x1="12" y1="9" x2="12" y2="13" strokeLinecap="round" /><line x1="12" y1="17" x2="12.01" y2="17" strokeLinecap="round" />
+                </svg>
+              </div>
+              <p className="font-heading text-base font-bold text-amber-900 dark:text-amber-200">Escalation Path</p>
+            </div>
+            <p className="text-sm leading-relaxed text-amber-800/80 dark:text-amber-300/80">
+              For medical emergencies call <strong>911</strong> immediately. For urgent billing or clinical concerns,
+              escalate via hotline: <strong>+1 (800) 555-1234</strong>.
             </p>
-            <Link to="/status" className="mt-3 inline-flex text-sm font-semibold text-amber-900 underline dark:text-amber-200">
-              Open System Status Page
+            <Link
+              to="/status"
+              className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-amber-900 underline underline-offset-2 dark:text-amber-300"
+            >
+              System Status Page
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
             </Link>
           </div>
         </div>

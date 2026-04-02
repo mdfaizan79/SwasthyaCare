@@ -8,7 +8,7 @@ export const authenticate = asyncHandler(async (req, _res, next) => {
   const authHeader = req.headers.authorization ?? '';
   const [scheme, token] = authHeader.split(' ');
 
-  if (scheme !== 'Bearer' || !token) {
+  if (scheme !== 'Bearer' ||  !token) {
     throw new ApiError(StatusCodes.UNAUTHORIZED, 'Authentication required');
   }
 
@@ -27,6 +27,7 @@ export const authenticate = asyncHandler(async (req, _res, next) => {
 
   req.user = user;
   next();
+  
 });
 
 export function authorizeRoles(...roles) {

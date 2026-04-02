@@ -8,7 +8,7 @@ import {
 import { authenticate, authorizeRoles } from '../middleware/auth.middleware.js';
 import validate from '../middleware/validate.middleware.js';
 import { updateUserStatusSchema } from '../validators/admin.validators.js';
-
+//routes
 const router = Router();
 
 router.use(authenticate, authorizeRoles('admin'));
